@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block body %}
+<form action="/edit/{{money.sno}}" method='POST'>
+    <div class="input-group">
+        <input type="number" name="amount" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" value="{{money.amount}}">
+        <span class="input-group-text">RS</span>
+        <span class="input-group-text">0.00</span>
+      </div>
+      <div class="input-group mt-3">
+        <input type="text" value="{{money.reason}}" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" name="reason">
+        <span class="input-group-text">Reason</span>
+        <!-- <span class="input-group-text">0.00</span> -->
+      </div>
+      <button type="submit"class="btn btn-info m-3">Done</button>
+</form>
+{% endblock body %}

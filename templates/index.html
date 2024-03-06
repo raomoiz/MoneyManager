@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="main">
+  <form action=" /" method='POST'>
+    <h1>Add Your Expenses</h1>
+      <div class="input-group">
+        <input type="number" name="amount" class="input form-control"
+          aria-label="Dollar amount (with dot and two decimal places)">
+        <span class="input-group-text">RS</span>
+        <span class="input-group-text">0.00</span>
+      </div>
+      <div class="input-group mt-3">
+        <input type="text" class="input form-control " aria-label="Dollar amount (with dot and two decimal places)"
+          name="reason">
+        <span class="input-group-text">Reason</span>
+        <!-- <span class="input-group-text">0.00</span> -->
+      </div>
+      <input type="date" name="date" value="">
+      <button type="submit" class="btn btn-info m-3">Add</button>
+      </form>
+      {% if money|length == 0 %}
+      <div class="alert alert-info" role="alert">
+        Add Expenses to so some Calculations
+      </div>
+      {% else %}
+
+
+      <table class="tab table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in money %}
+
+          <tr class="table-info">
+            <th scope="row">{{loop.index}}</th>
+            <td>{{m.amount}}</td>
+            <td>{{m.reason}}</td>
+            <td>{{m.date}}</td>
+            <td>
+              <a type="button" href="/delete/{{m.sno}}" class="btn btn-primary btn-sm">Delete</a>
+              <a type="button" href="/edit/{{m.sno}}" class="btn btn-secondary btn-sm">Edit</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="alert alert-warning" role="alert">
+        You had spended Rs.{{sum}} in {{days_till_now}} days at avg of Rs: {{avg}}
+        Now You should go with Per day avg Rs: {{n_Avg}} to complete Month
+      </div>
+      {% endif %}
+
+      <div class="container">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add Your Plans</h5>
+            <form action="/goal" method='POST'>
+              <div class="input-group">
+                <span class="input-group-text">RS</span>
+                <input type="number" name="amount" class="form-control"
+                  aria-label="Dollar amount (with dot and two decimal places)">
+              </div>
+              <div class="input-group mt-3">
+                <textarea type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
+                  name="cause"></textarea>
+                <span class="input-group-text">Cause</span>
+                <!-- <span class="input-group-text">0.00</span> -->
+              </div>
+              <button type="submit" class="btn btn-info m-3">Add</button>
+            </form>
+          </div>
+        </div>
+        {% for i in goals %}
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">RS : {{i.Amount}}</h5>
+            <p class="card-text">{{i.desc}}</p>
+            <h4>{{i.msg}}</h4>
+
+            <a href="/delete_goals/{{i.sno}}" type="button" class="card-link btn btn-primary btn-sm">Delete</a>
+            <a href="/edit_goals/{{i.sno}}" type="button" class="card-link btn btn-primary btn-sm">Edit</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <h2>Graphs</h2>
+      <div style="height: 50vh; width: 50%;">
+        <canvas id="myChart"></canvas>
+      </div>
+      <a href="/all_record" type="button" class="card-link btn btn-primary btn-sm">Get All Records</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const labels = {{ labels | tojson}};
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Expenses',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: {{ data | tojson}},
+        }]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: { maintainAspectRatio: false }
+    };
+
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+
+  </script>
+  {% endblock %}

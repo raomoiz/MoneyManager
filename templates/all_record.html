@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block body %}
+      <table class="table ">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in money %}
+
+          <tr class="table-info">
+            <th scope="row">{{loop.index}}</th>
+            <td>{{m.amount}}</td>
+            <td>{{m.reason}}</td>
+            <td>{{m.date}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- <div style="height: 50vh; width: 50%;">
+        <canvas id="myChart"></canvas>
+      </div> -->
+  </div>
+
+  {% endblock %}
